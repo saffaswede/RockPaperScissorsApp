@@ -1,46 +1,29 @@
-﻿@*@model IEnumerable<RockPaperScissorsWebApp.Models.Round>*@
-@model RockPaperScissorsWebApp.Models.ScorecardViewModel 
+﻿@model RockPaperScissorsWebApp.Models.ScorecardViewModel 
 
 @{
     ViewBag.Title = "Scorecard";
 }
 <div class="row">
-    <h2 class="text-center">Scores</h2>
-</div>
-<span class=" text-center row">
-    <span><h3>@Model.Player1Name      @Model.Player1Score : @Model.Player2Score      @Model.Player2Name</h3>
-    </span>
-</span>
-<div class=" text-center row">
-    <h1 class=" text-center col-xs-4 col-xs-push-2">@Model.Player1Gesture</h1>
-    <h1 class=" text-center col-xs-4 col-xs-push-2">@Model.Player2Gesture</h1>
+    <h1 class="text-center text-success">@Model.Message</h1>
 </div>
 <div class=" text-center row">
-    <div class="btn-lg text-center ">@Html.ActionLink("Play again", "OldGame")</div>
-    <div class="btn-lg text-center ">@Html.ActionLink("New game", "Index")</div>
+    <h1 class=" text-center col-xs-4 col-xs-push-1">@Model.Player1Gesture</h1>
+    <h1 class=" text-center col-xs-4 col-xs-push-3">@Model.Player2Gesture</h1>
+</div>
+<div class="row">
+    <h4 class="text-center">Score</h4>
+</div>
+<div class=" text-center row">
+    <h4 class="col-xs-4 text-right">@Model.Player1Name</h4>
+    <h4 class="col-xs-2 col-xs-push-1 text-center">@Model.Player1Score : @Model.Player2Score</h4>
+    <h4 class="col-xs-4 col-xs-push-2 text-left">@Model.Player2Name</h4>
 </div>
 
-<div class="col-xs-10 col-xs-push-1 dl-horizontal row">
-    <table class="table table-striped">
-        <tr>
-            <th>Round</th>
-            <th>Player 1 Gesture</th>
-            <th>Player 1 Score</th>
-            <th>Player 2 Score</th>
-            <th>Player 2 Gesture</th>
-        </tr>
-        
-        @foreach (var item in @Model.History)
-        {
-            <tr>
-                <td>@item.RoundNumber</td>
-                <td>@item.Player1Gesture</td>
-                <td>@item.Player1Score</td>
-                <td>@item.Player2Score</td>
-                <td>@item.Player2Gesture</td>
-            </tr>
-        }
-    </table>
+<div class=" text-center row">
+    <div class="text-center btn-lg">@Html.ActionLink("Play again", "OldGame")</div>
+    <div class="text-center btn-lg">@Html.ActionLink("New game", "Index")</div>
 </div>
+
+@Html.Partial("History",@Model.History)
 
 

@@ -3,16 +3,19 @@ using System.Linq;
 using RockPaperScissorsWebApp.Enums;
 using RockPaperScissorsWebApp.Factories;
 using RockPaperScissorsWebApp.Models;
+using RockPaperScissorsWebApp.Repositories;
 
 namespace RockPaperScissorsWebApp.Services
 {
     public class PlayerService : IPlayerService
     {
         private readonly IStrategyFactory _strategyFactory;
+        private readonly IRepository<Player> _playerRepository;
 
-        public PlayerService(IStrategyFactory strategyFactory)
+        public PlayerService(IStrategyFactory strategyFactory, IRepository<Player> playerRepository)
         {
             _strategyFactory = strategyFactory;
+            _playerRepository = playerRepository;
         }
 
         public Gesture GetComputerGesture(IList<Gesture> opponentGestures)
@@ -25,22 +28,31 @@ namespace RockPaperScissorsWebApp.Services
             return bestStrategy.GetGesture();
         }
 
-        public IEnumerable<Player> CreateOneComputerAndOneHumanPlayer(string playerOneName, string playerTwoName)
+        public void CreateOneComputerAndOneHumanPlayer(string playerOneName, string playerTwoName)
         {
-            return new List<Player>
-            {
-                new Player(playerOneName, PlayerType.Human),
-                new Player(playerTwoName, PlayerType.Computer)
-            };
+            _playerRepository.Add(new Player(playerOneName, PlayerType.Human));
+            _playerRepository.Add(new Player(playerTwoName, PlayerType.Computer));
         }
 
-        public IEnumerable<Player> CreateTwoComputerPlayers(string playerOneName, string playerTwoName)
+        public void CreateTwoComputerPlayers(string playerOneName, string playerTwoName)
         {
-            return new List<Player>
-            {
-                new Player(playerOneName, PlayerType.Computer),
-                new Player(playerTwoName, PlayerType.Computer)
-            };
+            _playerRepository.Add(new Player(playerOneName, PlayerType.Computer));
+            _playerRepository.Add(new Player(playerTwoName, PlayerType.Computer));
+        }
+
+        public void SavePlayers(IEnumerable<Player> players)
+        {
+            _playerRepository.Save(players);
+        }
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return _playerRepository.GetAll();
+        }
+
+        public void Reset()
+        {
+            _playerRepository.Clear();
         }
     }
 }

@@ -8,17 +8,25 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
     [TestClass]
     public class CalculateWinnerTests
     {
+        private TestSessionRepository<Round> _testRoundRepository;
+        private GameService _game;
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            _testRoundRepository = new TestSessionRepository<Round>();
+            _game = new GameService(_testRoundRepository);
+        }
+
         [TestMethod]
         public void Rock_plays_rock_is_a_draw()
         {
             // Arrange
             var playerOne = new Player("Player 1",PlayerType.Computer) { Gesture = Gesture.Rock };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Rock };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
-
+            
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(null, actual);
@@ -30,11 +38,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Paper };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Paper };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(null, actual);
@@ -46,11 +52,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Scissors };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Scissors };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(null, actual);
@@ -62,11 +66,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Rock };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Paper };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerTwo, actual);
@@ -78,11 +80,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Paper };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Rock };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerOne, actual);
@@ -94,11 +94,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Rock };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Scissors };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerOne, actual);
@@ -110,11 +108,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Scissors };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Rock };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerTwo, actual);
@@ -126,11 +122,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Paper };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Scissors };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerTwo, actual);
@@ -142,11 +136,9 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             // Arrange
             var playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Scissors };
             var playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Paper };
-            var testRoundRepository = new TestRoundRepository();
-            var game = new GameService(testRoundRepository);
 
             // Act
-            var actual = game.CalculateWinner(playerOne, playerTwo);
+            var actual = _game.CalculateWinner(playerOne, playerTwo);
 
             // Assert
             Assert.AreEqual(playerOne, actual);

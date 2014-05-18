@@ -11,14 +11,14 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
         private Player _playerOne;
         private Player _playerTwo;
         private IGameService _gameService;
-        private TestRoundRepository _roundRepository;
+        private TestSessionRepository<Round> _roundRepository;
 
         [TestInitialize]
         public void TestInit()
         {
             _playerOne = new Player("Player 1", PlayerType.Computer) { Gesture = Gesture.Paper };
             _playerTwo = new Player("Player 2", PlayerType.Computer) { Gesture = Gesture.Rock };
-            _roundRepository = new TestRoundRepository();
+            _roundRepository = new TestSessionRepository<Round>(); 
             _gameService = new GameService(_roundRepository);
         }
 
@@ -81,10 +81,10 @@ namespace RockPaperScissorsWebApp.Tests.GameService_Tests
             _gameService.RecordResult(_playerOne, _playerTwo, _playerOne);
 
             // Assert
-            Assert.AreEqual(1, _roundRepository.Round.Player1Score);
-            Assert.AreEqual(0, _roundRepository.Round.Player2Score);
-            Assert.AreEqual(Gesture.Paper, _roundRepository.Round.Player1Gesture);
-            Assert.AreEqual(Gesture.Rock, _roundRepository.Round.Player2Gesture);
+            Assert.AreEqual(1, _roundRepository.Item.Player1Score);
+            Assert.AreEqual(0, _roundRepository.Item.Player2Score);
+            Assert.AreEqual(Gesture.Paper, _roundRepository.Item.Player1Gesture);
+            Assert.AreEqual(Gesture.Rock, _roundRepository.Item.Player2Gesture);
         }
     }
 }

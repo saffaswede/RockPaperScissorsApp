@@ -1,0 +1,27 @@
+﻿@model IEnumerable<RockPaperScissorsWebApp.Models.Round>
+
+<div class="row">
+    <h4 class="text-center">History</h4>
+</div>
+<div class="col-xs-10 col-xs-push-1 dl-horizontal row">
+    <table class="table table-striped">
+        <tr>
+            <th>Round</th>
+            <th class="text-center">Player 1 Gesture</th>
+            <th class="text-center">Player 1 Score</th>
+            <th class="text-center">Player 2 Score</th>
+            <th class="text-center">Player 2 Gesture</th>
+        </tr>
+
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.RoundNumber</td>
+                <td class="text-center">@item.Player1Gesture</td>
+                <td class="text-center">@item.Player1Score</td>
+                <td class="text-center">@item.Player2Score</td>
+                <td class="text-center">@item.Player2Gesture</td>
+            </tr>
+        }
+    </table>
+</div>

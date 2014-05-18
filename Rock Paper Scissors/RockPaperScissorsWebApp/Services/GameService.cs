@@ -8,9 +8,9 @@ namespace RockPaperScissorsWebApp.Services
 {
     public class GameService : IGameService
     {
-        private readonly IRoundRepository _roundRepository;
+        private readonly IRepository<Round> _roundRepository;
 
-        public GameService(IRoundRepository roundRepository)
+        public GameService(IRepository<Round> roundRepository)
         {
             _roundRepository = roundRepository;
         }

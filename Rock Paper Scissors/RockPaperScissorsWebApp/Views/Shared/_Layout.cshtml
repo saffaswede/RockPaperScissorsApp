@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-fixed-top col-xs-10 col-xs-offset-1">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -19,14 +19,14 @@
                 </button>
                 @Html.ActionLink("Rock Paper Scissors", "Index", "Game", null, new { @class = "navbar-brand" })
             </div>
-            
+
         </div>
     </div>
-    <div class="container body-content row">
+    <div class="container body-content row col-xs-10 col-xs-offset-1">
         @RenderBody()
     </div>
-    <footer class="row col-xs-8 col-xs-push-8">
-        <h6>&copy; @DateTime.Now.Year Murray Macdonald</h6>
+    <footer class="navbar navbar-fixed-bottom">
+        <h6 class="text-right col-xs-10 col-xs-offset-1">&copy; @DateTime.Now.Year Murray Macdonald</h6>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")

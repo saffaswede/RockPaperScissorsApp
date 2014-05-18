@@ -83,17 +83,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\GameController_Tests\ScorecardTests.cs" />
+    <Compile Include="Controllers\GameController_Tests\GetHumanGesturesTests.cs" />
+    <Compile Include="Controllers\GameController_Tests\GetComputerGesturesTests.cs" />
+    <Compile Include="Controllers\GameController_Tests\NewGameTests.cs" />
+    <Compile Include="Controllers\GameController_Tests\OldGameTests.cs" />
+    <Compile Include="Controllers\GameController_Tests\IndexTests.cs" />
     <Compile Include="GameService_Tests\CalculateWinnerTests.cs" />
     <Compile Include="GameService_Tests\GetScorecardTests.cs" />
+    <Compile Include="GameService_Tests\ResetTests.cs" />
     <Compile Include="GameService_Tests\RecordResultTests.cs" />
-    <Compile Include="PlayerService_Tests\GetGestureTests.cs" />
+    <Compile Include="PlayerService_Tests\CreateTwoComputerPlayersTests.cs" />
+    <Compile Include="PlayerService_Tests\GetComputerGestureTests.cs" />
+    <Compile Include="PlayerService_Tests\CreateOneComputerAndOneHumanPlayerTests.cs" />
+    <Compile Include="PlayerService_Tests\GetPlayersTests.cs" />
+    <Compile Include="PlayerService_Tests\SavePlayersTests.cs" />
+    <Compile Include="PlayerService_Tests\PlayerServiceResetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoundRepository_Tests\AddGetAllClearTests.cs" />
-    <Compile Include="RoundRepository_Tests\SadPath\CalculateWinnerSadPathTests.cs" />
     <Compile Include="Strategies_Tests\FrequencyAnalysisStrategy_Tests\GetGestureTests.cs" />
     <Compile Include="Strategies_Tests\FrequencyAnalysisStrategy_Tests\GetProbabilityTests.cs" />
     <Compile Include="Strategies_Tests\RandomGuessingStrategy_Tests\GetGestureTests.cs" />
-    <Compile Include="TestRoundRepository.cs" />
+    <Compile Include="TestGameService.cs" />
+    <Compile Include="TestPlayerService.cs" />
+    <Compile Include="TestSessionRepository.cs" />
     <Compile Include="TestStrategy.cs" />
     <Compile Include="TestStrategyFactory.cs" />
     <Compile Include="GestureCollectionBuilder.cs" />
@@ -110,9 +122,7 @@
       <Name>RockPaperScissorsWebApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

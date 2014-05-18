@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using RockPaperScissorsWebApp.Enums;
 using RockPaperScissorsWebApp.Factories;
@@ -11,24 +10,31 @@ namespace RockPaperScissorsWebApp.Controllers
 {
     public class GameController : Controller
     {
-        private static IList<Player> _players;
-        private static IGameService _gameService;
-        private static IPlayerService _playerService;
-        private static ScorecardViewModel _scorecardViewModel;
-        private static RoundRepository _roundRepository;
+        private readonly IGameService _gameService;
+        private readonly IPlayerService _playerService;
+        private ScorecardViewModel _scorecardViewModel;
 
         public GameController()
         {
-            _roundRepository = new RoundRepository();
-            _gameService = new GameService(_roundRepository);
-            IStrategyFactory strategyFactory = new StrategyFactory();
-            _playerService = new PlayerService(strategyFactory);
+            var roundRepository = new SessionRepository<Round>("Rounds");
+            _gameService = new GameService(roundRepository);
+
+            var strategyFactory = new StrategyFactory();
+            var playerRepository = new SessionRepository<Player>("Players");
+            _playerService = new PlayerService(strategyFactory, playerRepository);
+        }
+
+        public GameController(IGameService gameService,
+                              IPlayerService playerService)
+        {
+            _gameService = gameService;
+            _playerService = playerService;
         }
 
         public ActionResult Index()
         {
-            _players = new List<Player>();
             _gameService.Reset();
+            _playerService.Reset();
 
             return View();
         }
@@ -37,59 +43,64 @@ namespace RockPaperScissorsWebApp.Controllers
         {
             if (gameType == GameType.HumanVsComputer)
             {
-                _players = _playerService.CreateOneComputerAndOneHumanPlayer("Player 1", "Player 2").ToList();
+                _playerService.CreateOneComputerAndOneHumanPlayer("Player 1", "Player 2");
                 return RedirectToAction("ChooseHumanGesture");
             }
-            _players = _playerService.CreateTwoComputerPlayers("Player 1", "Player 2").ToList();
+            _playerService.CreateTwoComputerPlayers("Player 1", "Player 2");
             return RedirectToAction("GetComputerGestures");
         }
 
         public ActionResult OldGame()
         {
-            return RedirectToAction(_players.Any(p => p.PlayerType == PlayerType.Human) ? "ChooseHumanGesture" : "GetComputerGestures");
+            var players = _playerService.GetPlayers().ToList();
+            return RedirectToAction(players.Any(p => p.PlayerType == PlayerType.Human) ? "ChooseHumanGesture" : "GetComputerGestures");
         }
 
         public ActionResult ChooseHumanGesture()
         {
-            return View();
+            var viewModel = _gameService.GetScorecard().ToList();
+            return View(viewModel);
         }
 
         public ActionResult GetComputerGestures()
         {
             var playerOnesGestures = _gameService.GetScorecard().Select(g => g.Player1Gesture).ToList();
             var playerTwosGestures = _gameService.GetScorecard().Select(g => g.Player2Gesture).ToList();
-            _players.First().Gesture = _playerService.GetComputerGesture(playerTwosGestures);
-            _players.Last().Gesture = _playerService.GetComputerGesture(playerOnesGestures);
+            var players = _playerService.GetPlayers().ToList();
+            players.First().Gesture = _playerService.GetComputerGesture(playerTwosGestures);
+            players.Last().Gesture = _playerService.GetComputerGesture(playerOnesGestures);
+            _playerService.SavePlayers(players); 
             return RedirectToAction("Scorecard");
         }
 
         public ActionResult GetHumanGesture(Gesture gesture)
         {
+            var players = _playerService.GetPlayers().ToList();
+            players.First().Gesture = gesture;
             var playerOnesGestures = _gameService.GetScorecard().Select(g => g.Player1Gesture).ToList();
-            _players.First().Gesture = gesture;
-            _players.Last().Gesture = _playerService.GetComputerGesture(playerOnesGestures);
+            players.Last().Gesture = _playerService.GetComputerGesture(playerOnesGestures);
+            _playerService.SavePlayers(players);
             return RedirectToAction("Scorecard");
         }
         
         public ActionResult Scorecard()
         {
-            var winner = _gameService.CalculateWinner(_players.First(), _players.Last());
-            _gameService.RecordResult(_players.First(), _players.Last(), winner);
-
+            var players = _playerService.GetPlayers().ToList();
+            var winner = _gameService.CalculateWinner(players.First(), players.Last());
+            var message = winner != null ? string.Format("The winner is {0}.", winner.Name) : "It is a draw.";
+            _gameService.RecordResult(players.First(), players.Last(), winner);
             _scorecardViewModel = new ScorecardViewModel
             {
-                Player1Name = _players.First().Name,
-                Player1Score = _players.First().CurrentScore,
-                Player1Gesture = _players.First().Gesture,
-                Player2Name = _players.Last().Name,
-                Player2Score = _players.Last().CurrentScore,
-                Player2Gesture = _players.Last().Gesture,
+                Message = message,
+                Player1Name = players.First().Name,
+                Player1Score = players.First().CurrentScore,
+                Player1Gesture = players.First().Gesture,
+                Player2Name = players.Last().Name,
+                Player2Score = players.Last().CurrentScore,
+                Player2Gesture = players.Last().Gesture,
                 History = _gameService.GetScorecard().ToList()
             };
-
-            TempData["ScorecardViewModel"] = _scorecardViewModel;
-
             return View(_scorecardViewModel);
         }
-	}
+    }
 }

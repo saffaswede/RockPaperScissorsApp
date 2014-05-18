@@ -6,8 +6,11 @@ namespace RockPaperScissorsWebApp.Services
 {
     public interface IPlayerService
     {
-        IEnumerable<Player> CreateTwoComputerPlayers(string playerOneName, string playerTwoName);
-        IEnumerable<Player> CreateOneComputerAndOneHumanPlayer(string playerOneName, string playerTwoName);
+        void CreateTwoComputerPlayers(string playerOneName, string playerTwoName);
+        void CreateOneComputerAndOneHumanPlayer(string playerOneName, string playerTwoName);
         Gesture GetComputerGesture(IList<Gesture> opponentGestures);
+        IEnumerable<Player> GetPlayers();
+        void Reset();
+        void SavePlayers(IEnumerable<Player> players);
     }
 }

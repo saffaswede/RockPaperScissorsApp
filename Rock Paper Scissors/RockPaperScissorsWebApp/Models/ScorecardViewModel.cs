@@ -5,6 +5,8 @@ namespace RockPaperScissorsWebApp.Models
 {
     public class ScorecardViewModel
     {
+
+        public string Message { get; set; }
         public string Player1Name { get; set; }
         public int Player1Score { get; set; }
         public Gesture Player1Gesture { get; set; }

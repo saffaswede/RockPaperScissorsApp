@@ -1,4 +1,5 @@
 ﻿@using RockPaperScissorsWebApp.Enums
+@model IEnumerable<RockPaperScissorsWebApp.Models.Round>
 
 @{
     ViewBag.Title = "ChooseHumanGesture";
@@ -12,6 +13,8 @@
     <div class="btn-lg text-center">@Html.ActionLink("Paper", "GetHumanGesture", new { gesture = Gesture.Paper })</div>
     <div class="btn-lg text-center">@Html.ActionLink("Scissors", "GetHumanGesture", new { gesture = Gesture.Scissors })</div>
 </div>
+
+@Html.Partial("History", @Model)
 
 
 
